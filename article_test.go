@@ -48,3 +48,23 @@ func TestShowIndexPageUnauthenticated(t *testing.T) {
 		return statusOK && pageOK
 	})
 }
+
+func TestArticleUnauthenticated(t *testing.T) {
+	r := getRouter(true)
+
+	r.GET("/article/view/:article_id", getArticle)
+
+	req, _ := http.NewRequest(http.Get, "/article/view/1", nil)
+
+	testHTTPResponse(t, r, req, func(w *httptest.ResponseRecorder) bool {
+		// Test the the status code is 200
+		statusOK := w.Code == http.StatusOK
+
+		// Test that the article rendered contains the title of the article by article id
+		p, err := ioutil.ReadAll(w.Body)
+		pageOK := err == nil && strings.Index(string(p), "<title>Article 1</title>") > 0
+
+		return statusOK && pageOK
+	})
+
+}
