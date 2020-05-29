@@ -54,7 +54,7 @@ func TestArticleUnauthenticated(t *testing.T) {
 
 	r.GET("/article/view/:article_id", getArticle)
 
-	req, _ := http.NewRequest(http.Get, "/article/view/1", nil)
+	req, _ := http.NewRequest(http.MethodGet, "/article/view/1", nil)
 
 	testHTTPResponse(t, r, req, func(w *httptest.ResponseRecorder) bool {
 		// Test the the status code is 200
